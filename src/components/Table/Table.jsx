@@ -5,6 +5,8 @@ import axios from 'axios';
 
 const Table = () => {
     const [data, setData] = useState([])
+    // search filters
+    const [searchData, setSearch] = useState('')
     // console.log(data)
 
     // GETINIG DATA FORM THE URL 
@@ -24,12 +26,25 @@ const Table = () => {
     // sorting funtions
     const [order, setOrder] = useState("ASC")
     const sorting = (col) => {
-        const name = [...data]
-        console.log('name', name.name)
 
         if (order === "ASC") {
             const sorted = [...data].sort((a, b) =>
                 a.name.localeCompare(b.name))
+            // a[col].localeCompare() > b[col].localeCompare() ? 1 : -1);
+            setData(sorted)
+            setOrder("DSC")
+        }
+
+        if (order === "ASC") {
+            const sorted = [...data].sort((a, b) =>
+                a.username.localeCompare(b.username))
+            // a[col].localeCompare() > b[col].localeCompare() ? 1 : -1);
+            setData(sorted)
+            setOrder("DSC")
+        }
+        if (order === "ASC") {
+            const sorted = [...data].sort((a, b) =>
+                a.phone.localeCompare(b.phone))
             // a[col].localeCompare() > b[col].localeCompare() ? 1 : -1);
             setData(sorted)
             setOrder("DSC")
@@ -43,13 +58,11 @@ const Table = () => {
 
     }
 
-    // search filters
-    const [searchData, setSearch] = useState('')
-    // const search = (e) => {
-    //     const Sdata = data.filter((user) => user.localeCompare().includes(e.target.value.toLowerCase))
-    //     setData(Sdata)
-    //     setSearch(e.target.value)
-    // }
+    // reset funtions
+    const reloadFun = () => {
+        window.location.reload()
+    }
+
     return (
         <div className="container mt-5 pt-2 mb-5">
             <div className="searchBox">
@@ -57,7 +70,7 @@ const Table = () => {
                     <input className="form-control me-2 shadow" type="text"
                         placeholder="Search an item"
                         aria-label="Search"
-                        onChange={(e)=>setSearch(e.target.value)}
+                        onChange={(e) => setSearch(e.target.value)}
                     />
                 </form>
             </div>
@@ -82,14 +95,33 @@ const Table = () => {
                                 <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                     <li onClick={() => sorting("name")}><a className="dropdown-item" href="#">By Asending</a></li>
                                     <li onClick={() => sorting("name")}><a className="dropdown-item" href="#">By Descending</a></li>
+                                    <li onClick={reloadFun}><a className="dropdown-item" href="#">Reset</a></li>
                                 </ul>
                             </div>
                         </th>
                         <th scope="col">
-                            username
+                            <div className="dropdown">
+                                <button className="btn fw-bold dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Username
+                                </button>
+                                <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    <li onClick={() => sorting("username")}><a className="dropdown-item" href="#">By Asending</a></li>
+                                    <li onClick={() => sorting("username")}><a className="dropdown-item" href="#">By Descending</a></li>
+                                    <li onClick={reloadFun}><a className="dropdown-item" href="#">Reset</a></li>
+                                </ul>
+                            </div>
                         </th>
                         <th scope="col">
-                            phone
+                        <div className="dropdown">
+                                <button className="btn fw-bold dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Phone
+                                </button>
+                                <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    <li onClick={() => sorting("phone")}><a className="dropdown-item" href="#">By Asending</a></li>
+                                    <li onClick={() => sorting("phone")}><a className="dropdown-item" href="#">By Descending</a></li>
+                                    <li onClick={reloadFun}><a className="dropdown-item" href="#">Reset</a></li>
+                                </ul>
+                            </div>
                         </th>
                         <th scope="col">
                             webite
@@ -97,16 +129,16 @@ const Table = () => {
                     </tr>
                 </thead>
                 {
-                    data.filter((value) =>{
-                        if(searchData == ""){
+                    data.filter((value) => {
+                        if (searchData == "") {
                             return value;
-                        } else if(value.name.toLowerCase().includes(searchData.toLowerCase())){
+                        } else if (value.name.toLowerCase().includes(searchData.toLowerCase())) {
                             return value;
-                        } else if (value.username.toLowerCase().includes(searchData.toLowerCase())){
+                        } else if (value.username.toLowerCase().includes(searchData.toLowerCase())) {
                             return value;
-                        } else if (value.phone.toLowerCase().includes(searchData.toLowerCase())){
+                        } else if (value.phone.toLowerCase().includes(searchData.toLowerCase())) {
                             return value;
-                        } else if(value.website.toLowerCase().includes(searchData.toLowerCase())){
+                        } else if (value.website.toLowerCase().includes(searchData.toLowerCase())) {
                             return value;
                         }
                     }).map((item, index) => (
